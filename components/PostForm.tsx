@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 
 function PostForm() {
@@ -22,11 +22,37 @@ function PostForm() {
     }
   };
 
-  console.log(preview);
+  const handlePostAction = async (formData: FormData) => {
+    const formDataCopy = formData;
+    ref.current?.reset();
+
+    const text = formDataCopy.get("postInput") as string;
+
+    if (!text.trim()) {
+      throw new Error("You must provide a post input");
+    }
+
+    setPreview(null);
+
+    try {
+      await createPostAction(formDataCopy);
+    } catch (error) {
+      console.log("Error creating post: ", error);
+    }
+  };
 
   return (
-    <div>
-      <form ref={ref} action="">
+    <div className="mb-2">
+      <form
+        ref={ref}
+        action={(formData) => {
+          // Handle form submission with server action
+          handlePostAction(formData);
+
+          // Toast notification based on the promise aboce
+        }}
+        className="p-3 bg-white rounded-lg border"
+      >
         <div className="flex items-center space-x-2">
           <Avatar>
             <AvatarImage src={user?.imageUrl} />
@@ -63,15 +89,27 @@ function PostForm() {
           </div>
         )}
 
-        <div>
+        <div className="flex justify-end mt-2 space-x-2">
           <Button type="button" onClick={() => fileInputRef.current?.click()}>
             <ImageIcon className="mr-2" size={16} color="currentColor" />
             {preview ? "Change" : "Add"} image
           </Button>
 
           {/* Add a remove preview button */}
+          {preview && (
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setPreview(null)}
+            >
+              <XIcon className="mr-2" size={16} color="currentColor" />
+              Remove image
+            </Button>
+          )}
         </div>
       </form>
+
+      <hr className="mt-2 border-gray-300" />
     </div>
   );
 }
