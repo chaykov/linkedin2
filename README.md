@@ -1,7 +1,7 @@
 ## LINKEDIN 2.0 with Next.js 14
 
 - [Microsoft Azure]
-- [Github Copilot]
+- [Clerk]
 - [MongoDB]
 - [TypeScript]
 - [TailwindCSS]
