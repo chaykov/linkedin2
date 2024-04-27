@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "linkedinclone.blob.core.windows.net",
+        hostname: "linkedin2clone.blob.core.windows.net",
       },
     ],
   },

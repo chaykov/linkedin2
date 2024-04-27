@@ -11,18 +11,20 @@ export interface AddPostRequestBody {
 }
 
 export async function POST(request: Request) {
-  auth().protect(); // protect the route with Clerk authentication
+  //  auth().protect();
+  const { user, text, imageUrl }: AddPostRequestBody = await request.json();
 
   try {
     await connectDB();
-    const { user, text, imageUrl }: AddPostRequestBody = await request.json();
 
     const postData: IPostBase = {
       user,
       text,
       ...(imageUrl && { imageUrl }),
     };
+
     const post = await Post.create(postData);
+    return NextResponse.json({ message: "Post created successfully", post });
   } catch (error) {
     return NextResponse.json(
       { error: `An error occurred while creating the post ${error}` },

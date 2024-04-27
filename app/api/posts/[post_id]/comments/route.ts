@@ -2,7 +2,6 @@ import connectDB from "@/mongodb/db";
 import { ICommentBase } from "@/mongodb/models/comment";
 import { Post } from "@/mongodb/models/post";
 import { IUser } from "@/types/user";
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -36,10 +35,7 @@ export async function POST(
   request: Request,
   { params }: { params: { post_id: string } }
 ) {
-  await connectDB();
-
   const { user, text }: AddCommentRequestBody = await request.json();
-
   try {
     const post = await Post.findById(params.post_id);
 

@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import createPostAction from "@/actions/createPostAction";
+import Image from "next/image";
 
 function PostForm() {
   const { user } = useUser();
@@ -29,7 +30,7 @@ function PostForm() {
 
     const text = formDataCopy.get("postInput") as string;
 
-    if (!text.trim()) {
+    if (!text) {
       throw new Error("You must provide a post input");
     }
 
@@ -86,12 +87,23 @@ function PostForm() {
         {/* Preview conditional check*/}
         {preview && (
           <div className="mt-3">
-            <img src={preview} alt="preview" className="w-full object-cover" />
+            {/* <img src={preview} alt="preview" className="w-full object-cover" /> */}
+            <Image
+              src={preview}
+              alt="preview"
+              className="w-full object-cover"
+              width={200}
+              height={150}
+            />
           </div>
         )}
 
         <div className="flex justify-end mt-2 space-x-2">
-          <Button type="button" onClick={() => fileInputRef.current?.click()}>
+          <Button
+            type="button"
+            variant={preview ? "secondary" : "outline"}
+            onClick={() => fileInputRef.current?.click()}
+          >
             <ImageIcon className="mr-2" size={16} color="currentColor" />
             {preview ? "Change" : "Add"} image
           </Button>
